@@ -1,0 +1,122 @@
+
+
+# Install TensorFlow if needed
+# !pip install tensorflow --quiet
+
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Step 1: Load MNIST dataset
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+print("Training data shape:", x_train.shape)
+print("Test data shape:", x_test.shape)
+
+# Step 2: Normalize data (0–255 → 0–1)
+x_train = x_train / 255.0
+x_test = x_test / 255.0
+
+# Step 3: Convert labels to one-hot encoding
+y_train = to_categorical(y_train, 10)
+y_test = to_categorical(y_test, 10)
+
+# Step 4: Build Feedforward Neural Network
+
+model = Sequential([
+    Flatten(input_shape=(28, 28)),        # Input layer (flatten image)
+    Dense(128, activation='relu'),        # Hidden layer 1
+    Dense(64, activation='relu'),         # Hidden layer 2
+    Dense(10, activation='softmax')       # Output layer (10 digits)
+])
+
+# Step 5: Compile the model
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Step 6: Train the model
+history = model.fit(x_train, y_train, epochs=10, batch_size=128,
+                    validation_split=0.1, verbose=1)
+
+# Step 7: Evaluate the model
+test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
+print(f"\n✅ Test Accuracy: {test_acc*100:.2f}%")
+
+# Step 8: Plot accuracy and loss curves
+plt.figure(figsize=(12,5))
+plt.subplot(1,2,1)
+plt.plot(history.history['accuracy'], label='Train Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.title('Model Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+
+plt.subplot(1,2,2)
+plt.plot(history.history['loss'], label='Train Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.title('Model Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+# Step 9: Make Predictions on Test Data
+predictions = model.predict(x_test)
+
+     
+Training data shape: (60000, 28, 28)
+Test data shape: (10000, 28, 28)
+Epoch 1/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 4s 6ms/step - accuracy: 0.8194 - loss: 0.6553 - val_accuracy: 0.9602 - val_loss: 0.1418
+Epoch 2/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 2s 6ms/step - accuracy: 0.9558 - loss: 0.1502 - val_accuracy: 0.9722 - val_loss: 0.1017
+Epoch 3/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 3s 7ms/step - accuracy: 0.9692 - loss: 0.1016 - val_accuracy: 0.9717 - val_loss: 0.0949
+Epoch 4/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 3s 7ms/step - accuracy: 0.9791 - loss: 0.0722 - val_accuracy: 0.9757 - val_loss: 0.0817
+Epoch 5/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 2s 6ms/step - accuracy: 0.9820 - loss: 0.0575 - val_accuracy: 0.9773 - val_loss: 0.0824
+Epoch 6/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 3s 7ms/step - accuracy: 0.9871 - loss: 0.0426 - val_accuracy: 0.9800 - val_loss: 0.0717
+Epoch 7/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 2s 5ms/step - accuracy: 0.9891 - loss: 0.0358 - val_accuracy: 0.9770 - val_loss: 0.0777
+Epoch 8/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 3s 8ms/step - accuracy: 0.9913 - loss: 0.0297 - val_accuracy: 0.9800 - val_loss: 0.0736
+Epoch 9/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 2s 5ms/step - accuracy: 0.9941 - loss: 0.0211 - val_accuracy: 0.9785 - val_loss: 0.0704
+Epoch 10/10
+422/422 ━━━━━━━━━━━━━━━━━━━━ 2s 5ms/step - accuracy: 0.9951 - loss: 0.0181 - val_accuracy: 0.9787 - val_loss: 0.0801
+
+✅ Test Accuracy: 97.70%
+
+313/313 ━━━━━━━━━━━━━━━━━━━━ 1s 2ms/step
+
+import random
+idx = random.randint(0, len(x_test) - 1)  # pick random index
+plt.imshow(x_test[idx], cmap='gray')
+plt.title(f"Predicted: {np.argmax(predictions[idx])}")
+plt.axis('off')
+plt.show()
+     
+
+
+idx = random.randint(0, len(x_test) - 1)  # pick random index
+plt.imshow(x_test[idx], cmap='gray')
+plt.title(f"Predicted: {np.argmax(predictions[idx])}")
+plt.axis('off')
+plt.show()
+     
+
+
+idx = random.randint(0, len(x_test) - 1)  # pick random index
+plt.imshow(x_test[idx], cmap='gray')
+plt.title(f"Predicted: {np.argmax(predictions[idx])}")
+plt.axis('off')
+plt.show()
+     
