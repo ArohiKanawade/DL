@@ -9,7 +9,7 @@ b = tf.random.uniform(shape=[16, 16], minval=0.0, maxval=101.0, dtype=tf.float32
 
 print("Addition:\n",tf.add(a,b))
 print("\nSubtraction:\n",tf.subtract(a,b))
-print("\nMultiplication(element-wise:\n",tf.matmul(a,b))
+print("\nMultiplication(element-wise):\n",tf.matmul(a,b))
 print("\nDivision:\n",tf.divide(a,b))
 print("\nMean of A:\n",tf.reduce_mean(a))
 print("\nMax of B:\n",tf.reduce_max(b))
